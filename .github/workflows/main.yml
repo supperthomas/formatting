@@ -22,7 +22,7 @@ jobs:
           pyinstaller --onefile --nowindowed formatting.py
           ls -la
           ls -la dist
-          zip -r -q -o formatting.zip dist/
+          zip -r -q -o formatting.zip README.md
           ls -la
       - name: Create Github release
         id: create_release
