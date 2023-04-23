@@ -24,6 +24,10 @@ jobs:
           ls -la dist
           zip -r -q -o formatting.zip dist/formatting
           ls -la
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: formatting.zip
       - name: Create Github release
         id: create_release
         uses: actions/create-release@v1
@@ -36,7 +40,4 @@ jobs:
         with:
           name: formatting.zip
           path: formatting.zip
-      - name: Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: formatting.zip
+
