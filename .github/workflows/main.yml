@@ -22,7 +22,7 @@ jobs:
           pyinstaller --onefile --nowindowed formatting.py
           ls -la
           ls -la dist
-          zip -r -q -o formatting.zip README.md
+          zip -r -q -o formatting.zip dist/formatting
           ls -la
       - name: Create Github release
         id: create_release
@@ -34,8 +34,8 @@ jobs:
           release_name: Release ${{github.run_number}}
       - uses: actions/upload-artifact@v3
         with:
-          name: artifacts_export
-          path: ./formatting.zip
+          name: formatting.zip
+          path: formatting.zip
       - name: Upload release asset
         id: upload-release-asset
         uses: actions/upload-release-asset@v1
@@ -43,6 +43,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN}}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./formatting.zip
+          asset_path: formatting.zip
           asset_name: formatting.zip
 
