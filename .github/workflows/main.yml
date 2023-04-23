@@ -1,4 +1,4 @@
-name: Check File Format and License
+name: action
 
 on: [pull_request]
 
