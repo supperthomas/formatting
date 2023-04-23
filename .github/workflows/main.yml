@@ -18,9 +18,11 @@ jobs:
         run: |
           pip install -r requirements.txt
           pip install pyinstaller
+          sudo apt-get install zip
           pyinstaller --onefile --nowindowed formatting.py
           ls -la
           ls -la dist
+          zip -r -q -o formatting.zip dist/
       - name: Create Github release
         id: create_release
         uses: actions/create-release@v1
