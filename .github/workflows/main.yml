@@ -31,5 +31,5 @@ jobs:
           files: formatting.zip
       - uses: actions/upload-artifact@v3
         with:
-          name: formatting.zip
-          path: formatting.zip
+          name: formatting
+          path: dist/formatting
