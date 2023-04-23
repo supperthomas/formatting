@@ -23,6 +23,7 @@ jobs:
           ls -la
           ls -la dist
           zip -r -q -o formatting.zip dist/
+          ls -la
       - name: Create Github release
         id: create_release
         uses: actions/create-release@v1
