@@ -41,3 +41,7 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./formatting.zip
           asset_name: formatting.zip
+      - uses: actions/upload-artifact@v3
+        with:
+          name: artifacts_export
+          path: ./formatting.zip
