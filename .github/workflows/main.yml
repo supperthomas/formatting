@@ -3,9 +3,9 @@ name: action
 on: [pull_request]
 
 jobs:
-  scancode_job:
+  build:
     runs-on: windows-latest
-    name: Scan code format and license
+    name: release exe file for formatting
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python
@@ -13,7 +13,7 @@ jobs:
         with:
           python-version: 3.8
       
-      - name: Check Format and License
+      - name: Create exe
         shell: bash
         run: |
           pip install -r requirements.txt
@@ -30,7 +30,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.run_number}}
-          release_name: Release ${{github.run_number}}
+          release_name: Release ${{github.run_number}}      
       - uses: actions/upload-artifact@v3
         with:
           name: formatting.exe
@@ -42,6 +42,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN}}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: formatting.exe
+          asset_path: dist/formatting.exe
           asset_name: formatting.exe
 
