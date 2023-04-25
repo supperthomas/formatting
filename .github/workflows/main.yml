@@ -1,11 +1,20 @@
-name: Check File Format and License
+name: release
 
-on: [pull_request]
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  pull_request:
 
 jobs:
-  scancode_job:
-    runs-on: ubuntu-latest
-    name: Scan code format and license
+  build-artifact:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
+          - macOS-latest
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python
@@ -13,9 +22,38 @@ jobs:
         with:
           python-version: 3.8
       
-      - name: Check Format and License
+      - name: Create exe
         shell: bash
         run: |
           pip install -r requirements.txt
           pip install pyinstaller
           pyinstaller --onefile --nowindowed formatting.py
+          ls -la
+          ls -la dist
+          ls -la
+          
+  upload-release:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            asset_name_suffix: formatting
+            asset_content_type: application/octet-stream
+          - os: windows-latest
+            asset_name_suffix: formatting.exe
+            asset_content_type: application/octet-stream
+          - os: macOS-latest
+            asset_name_suffix: formatting
+            asset_content_type: application/octet-stream
+    steps:
+      - name: Upload Release Asset
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.vars.outputs.upload_url }}
+          asset_path: ./dist/${{ matrix.asset_name_suffix }}
+          asset_name: ${{ matrix.asset_name_suffix }}
+          asset_content_type: ${{ matrix.asset_content_type }}
