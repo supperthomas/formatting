@@ -38,6 +38,18 @@ jobs:
           ls -la
           ls -la dist
           ls -la
+      - name: Create Github release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.run_number}}
+          release_name: Release ${{github.run_number}}  
+      - uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.asset_name_suffix }}
+          path: ./dist/${{ matrix.asset_name_suffix }}
           
       - name: Upload Release Asset
         id: upload-release-asset 
@@ -45,7 +57,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.vars.outputs.upload_url }}
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./dist/${{ matrix.asset_name_suffix }}
           asset_name: ${{ matrix.asset_name_suffix }}
           asset_content_type: ${{ matrix.asset_content_type }}
