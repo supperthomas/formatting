@@ -12,9 +12,9 @@ jobs:
     strategy:
       matrix:
         include:
-          - os: ubuntu-latest
-            asset_name_suffix: formatting
-            asset_content_type: application/octet-stream
+          #- os: ubuntu-latest
+          #  asset_name_suffix: formatting
+          #  asset_content_type: application/octet-stream
           - os: windows-latest
             asset_name_suffix: formatting.exe
             asset_content_type: application/octet-stream
